@@ -1,26 +1,32 @@
 package com.demoqa;
 
-import static com.codeborne.selenide.CollectionCondition.*;
+import com.github.javafaker.Faker;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+
+import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import org.junit.jupiter.api.Test;
-import java.io.File;
 
-public class StudentRegistrationFormPositiveTest {
 
-    String  firstName = "Kolj",
-            lastName = "Ivanov",
-            email = "mail@gmail.com",
+public class RegFormWFaker {
+
+    Faker fake = new Faker();
+
+    String firstName = fake.name().firstName(),
+            lastName = fake.name().lastName(),
+            email = fake.internet().emailAddress(),
             gender = "Male",
-            mobileNumber = "9213870987",
+            mobileNumber = fake.phoneNumber().subscriberNumber(10),
             subjects = "English",
-            address = "SPb, Fontanka 127",
+            address = fake.address().fullAddress(),
             state = "Rajasthan",
             city = "Jaiselmer";
 
     @Test
-    void fieldTheFormTest() {
+    void fieldTheFormWFakeTest() {
 
         open("https://demoqa.com/automation-practice-form");
         $("#firstName").setValue(firstName);
@@ -39,8 +45,8 @@ public class StudentRegistrationFormPositiveTest {
         // hobbies 2 of 3
         $(byText("Sports")).click();
         $(byText("Reading")).click();
-       // $x("//label[contains(text(),'Sport')]").click();
-       // $x("//label[contains(text(),'Reading')]").click();
+        // $x("//label[contains(text(),'Sport')]").click();
+        // $x("//label[contains(text(),'Reading')]").click();
         $("#uploadPicture").uploadFile(new File("./src/test/resources/img/img1.jpg"));
         $("#currentAddress").setValue(address);
         $("#react-select-3-input").setValue(state).pressEnter();
