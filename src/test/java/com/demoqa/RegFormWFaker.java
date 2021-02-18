@@ -19,11 +19,15 @@ public class RegFormWFaker {
             lastName = fake.name().lastName(),
             email = fake.internet().emailAddress(),
             gender = "Male",
+            month = "October",
+            year = "1989",
             mobileNumber = fake.phoneNumber().subscriberNumber(10),
             subjects = "English",
             address = fake.address().fullAddress(),
             state = "Rajasthan",
-            city = "Jaiselmer";
+            city = "Jaiselmer",
+            sports = "Sports",
+            reading = "Reading";
 
     @Test
     void fieldTheFormWFakeTest() {
@@ -36,17 +40,13 @@ public class RegFormWFaker {
         $("#userNumber").setValue(mobileNumber);
         // date of Birth !!! Calendar pick 15/10/89
         $("#dateOfBirthInput").click();
-        $x("//div[@class='react-datepicker__month-dropdown-container react-datepicker__month-dropdown-container--select']").click();
-        $x("//option[@value='9']").click();
-        $x("//select[@class='react-datepicker__year-select']").click();
-        $x("//option[@value='1989']").click();
-        $x("//div[contains(@aria-label,'15th')]").click();
+        $(".react-datepicker__month-select").selectOption(month);
+        $(".react-datepicker__year-select").selectOption(year);
+        $(".react-datepicker__day--015").click();
         $("#subjectsInput").setValue(subjects).pressEnter();
         // hobbies 2 of 3
-        $(byText("Sports")).click();
-        $(byText("Reading")).click();
-        // $x("//label[contains(text(),'Sport')]").click();
-        // $x("//label[contains(text(),'Reading')]").click();
+        $(byText(sports)).click();
+        $(byText(reading)).click();
         $("#uploadPicture").uploadFile(new File("./src/test/resources/img/img1.jpg"));
         $("#currentAddress").setValue(address);
         $("#react-select-3-input").setValue(state).pressEnter();
@@ -58,9 +58,9 @@ public class RegFormWFaker {
         $$(".table-responsive tr").filterBy(text("Student Email")).shouldHave(texts(email));
         $$(".table-responsive tr").filterBy(text("Gender")).shouldHave(texts(gender));
         $$(".table-responsive tr").filterBy(text("Mobile")).shouldHave(texts(mobileNumber));
-        $$(".table-responsive tr").filterBy(text("Date of Birth")).shouldHave(texts("15 October,1989"));
+        $$(".table-responsive tr").filterBy(text("Date of Birth")).shouldHave(texts("15 " +  month + "," + year));
         $$(".table-responsive tr").filterBy(text("Subjects")).shouldHave(texts(subjects));
-        $$(".table-responsive tr").filterBy(text("Hobbies")).shouldHave(texts("Sports, Reading"));
+        $$(".table-responsive tr").filterBy(text("Hobbies")).shouldHave(texts(sports + ", " + reading));
         $$(".table-responsive tr").filterBy(text("Picture")).shouldHave(texts("img1.jpg"));
         $$(".table-responsive tr").filterBy(text("Address")).shouldHave(texts(address));
         $$(".table-responsive tr").filterBy(text("State and City")).shouldHave(texts(state + " " + city));
